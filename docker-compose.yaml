@@ -1,0 +1,40 @@
+services:
+  # Javaアプリケーション側の設定
+  app:
+    build:
+      context: ./app
+      args:
+        workdir: "app"
+    container_name: java_app
+    volumes:
+      - .:/app
+    tty: true
+    stdin_open: true
+    depends_on:
+      db:
+        condition: service_healthy # DBが起動してからJavaを起動
+    environment:
+      - DB_URL=jdbc:postgresql://db:5432/myapp_db
+      - DB_USERNAME=user
+      - DB_PASSWORD=password
+
+  # PostgreSQL側の設定
+  db:
+    image: postgres:18.1-alpine
+    container_name: postgres_db
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=myapp_db
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d myapp_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
