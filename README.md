@@ -23,3 +23,9 @@ Java コンテナの中に入る場合
 ```shell
 docker compose exec app bash
 ```
+
+Java コンテナから postgresSQL コンテナに接続
+
+```shell
+psql -h db -U user -d myapp_db
+```
