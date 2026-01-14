@@ -13,7 +13,6 @@ import com.example.todolist.form.TodoData;
 import com.example.todolist.repository.TodoRepository;
 import com.example.todolist.service.TodoService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @AllArgsConstructor
