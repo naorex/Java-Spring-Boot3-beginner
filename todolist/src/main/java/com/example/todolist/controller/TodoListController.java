@@ -53,7 +53,7 @@ public class TodoListController {
     if (!result.hasErrors() && isValid) {
       // エラーなし
       Todo todo = todoData.toEntity();
-      todoRepository.saveAndFlush(todo);
+      todoRepository.saveAndFlush(todo); // SQL の INSERT文に相当
       return showTodoList(mv);
     } else {
       // エラーあり
