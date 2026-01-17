@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
@@ -19,12 +19,12 @@
       <tr th:each="todo:${todoList}">
         <td th:text="${todo.id}"></td>
         <td>
-          <a th:href="${/todo/__${todo.id}__}" th:text="${todo.title}"></a>
+          <a th:href="@{/todo/__${todo.id}__}" th:text="${todo.title}"></a>
         </td>
         <td th:text="${todo.importance==1?'★★★':'★'}"></td>
         <td th:text="${todo.urgency==1?'★★★':'★'}"></td>
         <td th:text="${todo.deadline}"></td>
-        <td th:text="${todo.done=='Y'?'完了':'}"></td>
+        <td th:text="${todo.done == 'Y'?'完了':'未完了'}"></td>
       </tr>
     </table>
   </body>
