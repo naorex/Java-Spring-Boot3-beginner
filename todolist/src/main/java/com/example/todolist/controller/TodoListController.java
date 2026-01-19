@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.ui.Model;
 import com.example.todolist.entity.Todo;
 import com.example.todolist.form.TodoData;
+import com.example.todolist.form.TodoQuery;
 import com.example.todolist.repository.TodoRepository;
 import com.example.todolist.service.TodoService;
 import jakarta.servlet.http.HttpSession;
@@ -32,6 +33,7 @@ public class TodoListController {
     mv.setViewName("todoList");
     List<Todo> todoList = todoRepository.findAll(); // .findAll() は SQL の "SELECT * FROM todo" に相当
     mv.addObject("todoList", todoList);
+    mv.addObject("todoQuery", new TodoQuery());
     return mv;
   }
 
@@ -106,5 +108,20 @@ public class TodoListController {
   public String deleteTodo(@ModelAttribute TodoData todoData) {
     todoRepository.deleteById(todoData.getId());
     return "redirect:/todo";
+  }
+
+  @PostMapping("/todo/query")
+  public ModelAndView queryTodo(
+      @ModelAttribute TodoQuery todoQuery,
+      BindingResult result,
+      ModelAndView mv) {
+    mv.setViewName("todoList");
+    List<Todo> todoList = null;
+    if (todoService.isValid(todoQuery, result)) {
+      // エラーが無ければ検索
+      todoList = todoService.doQuery(todoQuery);
+    }
+    mv.addObject("todoList", todoList);
+    return mv;
   }
 }
