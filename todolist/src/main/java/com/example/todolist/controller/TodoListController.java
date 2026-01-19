@@ -48,7 +48,7 @@ public class TodoListController {
   // todoForm.html で登録がクリックされたとき
   // 上述の createTodo() のオーバーロード
   @PostMapping("/todo/create")
-  public ModelAndView createTodo(
+  public String createTodo(
       @ModelAttribute @Validated TodoData todoData,
       BindingResult result, // todoData のチェック結果が格納される
       ModelAndView mv) {
@@ -59,11 +59,10 @@ public class TodoListController {
       // エラーなし
       Todo todo = todoData.toEntity();
       todoRepository.saveAndFlush(todo); // SQL の INSERT文に相当
-      return showTodoList(mv);
+      return "redirect:/todo";
     } else {
       // エラーあり
-      mv.setViewName("todoForm");
-      return mv;
+      return "todoForm";
     }
   }
 
